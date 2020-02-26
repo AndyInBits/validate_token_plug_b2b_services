@@ -17,9 +17,9 @@ defmodule ValidateAuth do
       |> send_resp(:unauthorized, "Authorization token is required.")
     end
 
+    token = String.replace(req_headers["authorization"], "Bearer ", "")
+    token_legacy_validation(token)
     conn
-    |> put_resp_content_type("text/plain")
-    |> send_resp(200, "Hello World!")
   end
 
   def token_legacy_validation(token) do
