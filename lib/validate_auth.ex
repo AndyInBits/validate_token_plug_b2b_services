@@ -11,6 +11,7 @@ defmodule ValidateAuth do
   def call(conn, _opts) do
     # get token from headers
     req_headers = Enum.into(conn.req_headers, %{})
+    IO.inspect(conn)
 
     if is_nil(req_headers["authorization"]) do
       conn
@@ -18,16 +19,19 @@ defmodule ValidateAuth do
     end
 
     token = String.replace(req_headers["authorization"], "Bearer ", "")
-    token_legacy_validation(token)
-    conn
+
+    case token_legacy_validation(token) do
+      {:ok, %HTTPoison.Response{status_code: 401, headers: headers, body: body}} ->
+        conn
+        |> send_resp(:unauthorized, "Authorization token is required.")
+
+      {:ok, %HTTPoison.Response{status_code: 200, headers: headers, body: body}} ->
+        nil
+    end
   end
 
   def token_legacy_validation(token) do
     HTTPoison.start()
-
-    resp =
-      HTTPoison.post(System.get_env("AUTH_ENDPOINT"), [], [{"Authorization", "bearer " <> token}])
-
-    IO.inspect(resp)
+    HTTPoison.post(System.get_env("AUTH_ENDPOINT"), [], [{"Authorization", "bearer " <> token}])
   end
 end
