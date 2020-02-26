@@ -21,12 +21,12 @@ defmodule ValidateAuth do
     token = String.replace(req_headers["authorization"], "Bearer ", "")
 
     case token_legacy_validation(token) do
-      {:ok, %HTTPoison.Response{status_code: 401, headers: headers, body: body}} ->
+      {:ok, %HTTPoison.Response{status_code: 401, headers: _headers, body: _body}} ->
         conn
         |> send_resp(:unauthorized, "Authorization token is required.")
 
-      {:ok, %HTTPoison.Response{status_code: 200, headers: headers, body: body}} ->
-        nil
+      {:ok, %HTTPoison.Response{status_code: 200, headers: _headers, body: _body}} ->
+        conn
     end
   end
 
