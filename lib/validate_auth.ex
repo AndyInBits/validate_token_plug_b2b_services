@@ -4,14 +4,11 @@ defmodule ValidateAuth do
   """
   import Plug.Conn
 
-  def test(), do: IO.inspect("aqui")
-
   def init(options), do: options
 
   def call(conn, _opts) do
     # get token from headers
     req_headers = Enum.into(conn.req_headers, %{})
-    IO.inspect(conn)
 
     if is_nil(req_headers["authorization"]) do
       conn
