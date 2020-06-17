@@ -28,7 +28,7 @@ defmodule ValidateAuth do
   end
 
   def token_legacy_validation(token) do
-    auth = System.get_env("AUTH_ENDPOINT") || "authentication:4005/api/v1/session/verify_token"
+    auth = System.get_env("AUTH_ENDPOINT") || "http://internal-ALB-prod-admin-internal-2147412802.us-east-1.elb.amazonaws.com:85/api/v1/session/verify_token"
     HTTPoison.start()
     HTTPoison.post(auth , [], [{"Authorization", "bearer " <> token}])
   end
