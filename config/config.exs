@@ -7,6 +7,17 @@ use Mix.Config
 # file won't be loaded nor affect the parent project. For this reason,
 # if you want to provide default values for your application for
 # 3rd-party users, it should be done in your "mix.exs" file.
+# Configures Guardian
+config :validate_auth, ValidateAuth.Auth.Guardian,
+  issuer: "authentication",
+  # optional
+  allowed_algos: ["HS512"],
+  # optional
+  ttl: {120, :days},
+  allowed_drift: 2000,
+  # optional
+  verify_issuer: true,
+  secret_key: "d26Q7owXLguZlTsOaTLVulpIKRaKszab6i+IKuRvPAPk6XHVTVxzAtojj76VM5hR"
 
 # You can configure your application as:
 #
